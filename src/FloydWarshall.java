@@ -6,7 +6,7 @@ public class FloydWarshall {
         int graph[][] = {   {0,         5,      MAX_INT,    10},
                             {MAX_INT,   0,      3,          MAX_INT},
                             {MAX_INT,   MAX_INT,0,          1},
-                {MAX_INT, MAX_INT, MAX_INT, 0}
+                            {MAX_INT, MAX_INT, MAX_INT, 0}
         };
         for(int[] row : floydWarshall(graph, 4)) {
             for(int num : row) {
