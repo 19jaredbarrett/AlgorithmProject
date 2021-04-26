@@ -8,7 +8,8 @@ public class FloydWarshall {
                             {MAX_INT,   MAX_INT,0,          1},
                             {MAX_INT, MAX_INT, MAX_INT, 0}
         };
-        for(int[] row : floydWarshall(graph, 4)) {
+        // print and get the shortest graph!
+        for(int[] row : floydWarshall(graph)) {
             for(int num : row) {
                 if(num == MAX_INT)
                     System.out.print("NF");
@@ -20,7 +21,8 @@ public class FloydWarshall {
         }
     }
 
-    public static int[][] floydWarshall(int graph[][], int numVertices) {
+    public static int[][] floydWarshall(int graph[][]) {
+        int numVertices = graph.length;
         int[][] solution = new int[numVertices][numVertices];
         // initialize our solution matrix, for pairs of all vertices
         // if the graph has a null value, the number value is simply Math.Infinity()
