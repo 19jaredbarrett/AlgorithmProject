@@ -9,14 +9,14 @@ public class FordFulkerson {
     private int numVert;
     int[][] flowGraph;
     public FordFulkerson () {
-        int[][] graph
+        int[][] flowGraph
                 = { { 0, 16, 13, 0, 0, 0 }, { 0, 0, 10, 12, 0, 0 },
                 { 0, 4, 0, 0, 14, 0 },  { 0, 0, 9, 0, 0, 20 },
                 { 0, 0, 0, 7, 0, 4 },   { 0, 0, 0, 0, 0, 0 } };
-        augPath= new int[numVert];
-        numVert = graph.length;
+        numVert = flowGraph.length;
+        augPath = new int[numVert];
         flowGraph = new int[numVert][numVert];
-        int flow = fordFulkerson(graph, 0, 5) ;
+        int flow = fordFulkerson(flowGraph, 0, 5) ;
         System.out.println("Ford-Fulkerson Flow Found: " + flow);
 
     }
@@ -37,20 +37,20 @@ public class FordFulkerson {
         //
         while(breadthFirstSearch(src, dst)) {
             // set it to a large number initially
-            int currFlow = FloydWarshall.MAX_INT;
+            int currPathFlow = FloydWarshall.MAX_INT;
 
             // get the max flow from augpath
             for ( v = dst; v != src;  v = augPath[v]) {
                 u = augPath[v];
-                currFlow = Math.min(currFlow, flowGraph[u][v]);
+                currPathFlow = Math.min(currPathFlow, flowGraph[u][v]);
             }
             // update capacity, meaning add or subtract from currflow
             for (v = dst; v != src; v = augPath[v]) {
                 u = augPath[v];
-                flowGraph[u][v] -= currFlow;
-                flowGraph[v][u] += currFlow;
+                flowGraph[u][v] -= currPathFlow;
+                flowGraph[v][u] += currPathFlow;
             }
-            numFlow += currFlow;
+            numFlow += currPathFlow;
         }
         return numFlow;
     }
@@ -72,14 +72,14 @@ public class FordFulkerson {
                 // only if this vertex hasn't been visited yet and the residual graph for this is greater than 0 (not src)
                 if(!visited[v] && flowGraph[currVert][v] > 0) {
                     // we found the destination,  add current vert and return true!
-                    if (currVert == dst) {
+                    if (v == dst) {
                         augPath[v] = currVert;
                         return true;
                     }
                     // add this vertex to our path!
                     augPath[v] = currVert;
                     visited[v] = true;
-                    queue.add(currVert);
+                    queue.add(v);
 
                 }
             }
