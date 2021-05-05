@@ -19,6 +19,7 @@ public class FloydWarshall {
             }
             System.out.println();
         }
+        FordFulkerson ford = new FordFulkerson();
     }
 
     public static int[][] floydWarshall(int graph[][]) {
