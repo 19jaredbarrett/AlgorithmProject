@@ -25,21 +25,26 @@ public class AStarAlgorithm {
         inputBlockedCells example: at row 0: BLOCKED_CELL_X = 5, BLOCKED_CELL_Y = 4. This location will be blocked from traversing to
      */
     public AStarAlgorithm () {
-        initAStarAlgorithm(8, 8, 0, 0, 7, 7,
-                new int[][] {
-                        {0, 4},
-                        {2,2},
-                        {3, 1},
-                        {3,3},
-                        {2, 1},
-                        {2, 3},
-                        {5, 6},
-                        {6, 7}
-                });
+        int[][] pathBlocks = new int[][] {
+                {0, 4},
+                {2,2},
+                {3, 1},
+                {3,3},
+                {2, 1},
+                {2, 3},
+                {5, 6},
+                {3, 5},
+                {6, 7},
+                {5, 2},
+                {7, 2},
+                {7, 4}
+        };
+        initAStarAlgorithm(8, 8, 0, 0, 7, 7, pathBlocks);
         displayGrid();
+
         runAlgorithm();
+        System.out.println("Algorithm Running...");
         displayScores();
-        displayGrid();
         displayPath();
     }
     public void initAStarAlgorithm (int rows, int cols, int startX, int startY, int endX, int endY, int[][] inputBlockedCells) {
@@ -157,7 +162,8 @@ public class AStarAlgorithm {
         }
     }
     private void displayGrid() {
-        System.out.println("grid: ");
+        System.out.print("Cost to adjacent cell: 10, Cost to diagonal: 15;\t");
+        System.out.println("What grid looks like: ");
         for(int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 if (i == startX && j == startY)
@@ -171,10 +177,10 @@ public class AStarAlgorithm {
             }
             System.out.println();
         }
-        System.out.println();
+
     }
     private void displayScores () {
-        System.out.println("Cost for each cells : ");
+        System.out.println("Cost to get to each cell: ");
         for(int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] != null)
@@ -189,17 +195,17 @@ public class AStarAlgorithm {
     }
     private void displayPath() {
         if(closedCells[endX][endY]) {
-            System.out.println("Path: ");
+            System.out.println("Optimized Path: ");
             Cell currCell = grid[endX][endY];
-            System.out.println(currCell);
+            System.out.print(" x: "+ currCell.x + " y: "+currCell.y);
             grid[currCell.x][currCell.y].isSolutionPath = true;
             while (currCell.cellParent != null) {
-                System.out.print("->" + currCell.cellParent);
+                System.out.print(" <---" + " x: " + currCell.x + " y: "+currCell.y);
                 grid[currCell.cellParent.x][currCell.cellParent.y].isSolutionPath = true;
                 currCell = currCell.cellParent;
             }
-            System.out.println();
-            System.out.println("grid: ");
+            System.out.println(" <---" + " x: " + startX + " y: "+startY);
+            System.out.println("Path displayed on grid: ");
             for(int i = 0; i < grid.length; i++) {
                 for (int j = 0; j < grid[i].length; j++) {
                     if (i == startX && j == startY)
