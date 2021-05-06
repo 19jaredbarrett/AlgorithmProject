@@ -8,6 +8,18 @@ public class FloydWarshall {
                             {MAX_INT,   MAX_INT,0,          1},
                             {MAX_INT, MAX_INT, MAX_INT, 0}
         };
+        System.out.println("Distances between vertices before");
+        for(int[] row : graph) {
+            for(int num : row) {
+                if (num == MAX_INT)
+                    System.out.print("NF");
+                else
+                    System.out.print(num);
+                System.out.print("\t");
+            }
+            System.out.println();
+        }
+        System.out.println("The distances between each vertex after FloydWarshall");
         // print and get the shortest graph!
         for(int[] row : floydWarshall(graph)) {
             for(int num : row) {
@@ -20,6 +32,9 @@ public class FloydWarshall {
             System.out.println();
         }
         Johnson john = new Johnson();
+        System.out.println("Graph used for network algorithms: " + "https://www.hackerearth.com/practice/algorithms/graphs/maximum-flow/tutorial/");
+        System.out.println("Expected maximum flow for this graph: 15");
+        // graph used for network graphs: https://www.hackerearth.com/practice/algorithms/graphs/maximum-flow/tutorial/
         FordFulkerson ford = new FordFulkerson();
         GoldbergTarjan gold = new GoldbergTarjan();
     }
@@ -42,7 +57,6 @@ public class FloydWarshall {
                 }
             }
         } // end for loops
-
         return solution;
     }
 }

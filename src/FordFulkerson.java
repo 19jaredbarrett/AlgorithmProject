@@ -9,10 +9,11 @@ public class FordFulkerson {
     private int numVert;
     int[][] flowGraph;
     public FordFulkerson () {
+        // graph used: https://www.hackerearth.com/practice/algorithms/graphs/maximum-flow/tutorial/
         int[][] graphTest
-                = { { 0, 16, 13, 0, 0, 0 }, { 0, 0, 10, 12, 0, 0 },
-                { 0, 4, 0, 0, 14, 0 },  { 0, 0, 9, 0, 0, 20 },
-                { 0, 0, 0, 7, 0, 4 },   { 0, 0, 0, 0, 0, 0 } };
+                = {{0, 10, 0, 8, 0, 0}, {0, 0, 5, 2, 0, 0},
+                {0, 0, 0, 0, 0, 7}, {0, 0, 0, 0, 10, 0},
+                {0, 0, 8, 0, 0, 10}, {0, 0, 0, 0, 0, 0}};
         numVert = graphTest.length;
         augPath = new int[numVert];
         flowGraph = new int[numVert][numVert];
