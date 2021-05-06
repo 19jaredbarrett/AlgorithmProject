@@ -24,11 +24,30 @@ public class AStarAlgorithm {
         in video games
         inputBlockedCells example: at row 0: BLOCKED_CELL_X = 5, BLOCKED_CELL_Y = 4. This location will be blocked from traversing to
      */
-    public AStarAlgorithm (int rows, int cols, int startX, int startY, int endX, int endY, int[][] inputBlockedCells) {
+    public AStarAlgorithm () {
+        initAStarAlgorithm(8, 8, 0, 0, 7, 7,
+                new int[][] {
+                        {0, 4},
+                        {2,2},
+                        {3, 1},
+                        {3,3},
+                        {2, 1},
+                        {2, 3},
+                        {5, 6},
+                        {6, 7}
+                });
+        displayGrid();
+        runAlgorithm();
+        displayScores();
+        displayGrid();
+        displayPath();
+    }
+    public void initAStarAlgorithm (int rows, int cols, int startX, int startY, int endX, int endY, int[][] inputBlockedCells) {
         numRows = rows;
         numCols = cols;
+        grid = new  Cell[rows][cols];
         closedCells = new boolean[rows][cols];
-        openCells = new PriorityQueue<Cell>();
+        openCells = new PriorityQueue<Cell>(new CellComparator());
 
         initStartCell(startX, startY);
         initEndCell(endX, endY);
@@ -46,7 +65,6 @@ public class AStarAlgorithm {
         // initialize blocked cells, cells we cannot move to
         for(int i = 0; i < inputBlockedCells.length; i++)
             addBlockedCell(inputBlockedCells[i][BLOCKED_CELL_X], inputBlockedCells[i][BLOCKED_CELL_Y]);
-
     }
 
     private void initStartCell(int x, int y) {
@@ -82,7 +100,7 @@ public class AStarAlgorithm {
         }
 
     }
-    private void initializeStart() {
+    private void runAlgorithm() {
         openCells.add(grid[startX][startY]);
         Cell currCell;
         while(true) {
@@ -123,25 +141,85 @@ public class AStarAlgorithm {
             }
             // handle moving downward in the grid
             if(currCell.x + 1 < grid.length) {
-                //dst = grid[currCell.x ]
-//https://youtu.be/oeT8B8sqbxQ?t=1308
-            }
+                dst = grid[currCell.x + 1][currCell.y];
+                updateCost(currCell, dst, currCell.cost + ADJACENT_COST);
+                // handle diagonal down and to the left
+                if (currCell.y - 1 >= 0) {
+                    dst = grid  [currCell.x + 1][currCell.y - 1];
+                    updateCost(currCell, dst, currCell.cost + DIAGONAL_COST);
+                }
+                if (currCell.y + 1 < grid[0].length) {
+                    dst = grid  [currCell.x + 1][currCell.y +1];
+                    updateCost(currCell, dst, currCell.cost + DIAGONAL_COST);
+                }
+            } // end handle downward
 
         }
     }
-
-    private class Cell implements Comparator<Cell> {
-        // represents the x and y coordinates
-        public int x, y;
-        public Cell cellParent;
-        public int heuristic;
-        public int cost;
-        // whether this cell is part of solution
-        public boolean isSolutionPath;
-        public Cell (int x, int y) {
-            this.x = x;
-            this.y = y;
+    private void displayGrid() {
+        System.out.println("grid: ");
+        for(int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (i == startX && j == startY)
+                    System.out.print("SRC  ");
+                else if (i == endX && j == endY)
+                    System.out.print("DST  ");
+                else if (grid[i][j] != null)
+                    System.out.printf("%-4d ", 0);
+                else
+                    System.out.print("BLC  ");
+            }
+            System.out.println();
         }
+        System.out.println();
+    }
+    private void displayScores () {
+        System.out.println("Cost for each cells : ");
+        for(int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] != null)
+                    System.out.printf("%-4d ", grid[i][j].cost);
+                else
+                    System.out.print("BLC  ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+    }
+    private void displayPath() {
+        if(closedCells[endX][endY]) {
+            System.out.println("Path: ");
+            Cell currCell = grid[endX][endY];
+            System.out.println(currCell);
+            grid[currCell.x][currCell.y].isSolutionPath = true;
+            while (currCell.cellParent != null) {
+                System.out.print("->" + currCell.cellParent);
+                grid[currCell.cellParent.x][currCell.cellParent.y].isSolutionPath = true;
+                currCell = currCell.cellParent;
+            }
+            System.out.println();
+            System.out.println("grid: ");
+            for(int i = 0; i < grid.length; i++) {
+                for (int j = 0; j < grid[i].length; j++) {
+                    if (i == startX && j == startY)
+                        System.out.print("SRC  ");
+                    else if (i == endX && j == endY)
+                        System.out.print("DST  ");
+                    else if (grid[i][j] != null)
+                        System.out.printf("%-4s ", (grid[i][j].isSolutionPath ? "X" : "0"));
+                    else
+                        System.out.print("BLC  ");
+                }
+                System.out.println();
+            }
+            System.out.println();
+        } else {
+            System.out.println("path not found");
+        }
+    }
+
+    private class CellComparator implements Comparator<Cell> {
         /**
          * This method is used in the priority queue to ensure that we are checking cells right
          * @param o1 first cell we are comparing
@@ -156,5 +234,19 @@ public class AStarAlgorithm {
                 return 1;
             else return 0;
         }
+    }
+    private class Cell {
+        // represents the x and y coordinates
+        public int x, y;
+        public Cell cellParent;
+        public int heuristic;
+        public int cost;
+        // whether this cell is part of solution
+        public boolean isSolutionPath;
+        public Cell (int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
     }
 }

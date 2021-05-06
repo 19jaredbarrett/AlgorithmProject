@@ -8,6 +8,7 @@ public class FloydWarshall {
                             {MAX_INT,   MAX_INT,0,          1},
                             {MAX_INT, MAX_INT, MAX_INT, 0}
         };
+        System.out.println("------------Floyd-Warshall Algorithm----------------");
         System.out.println("Distances between vertices before");
         for(int[] row : graph) {
             for(int num : row) {
@@ -31,12 +32,18 @@ public class FloydWarshall {
             }
             System.out.println();
         }
+        System.out.println("------------Johnson Algorithm----------------");
         Johnson john = new Johnson();
+        System.out.println("------------A Star Algorithm----------------");
+        AStarAlgorithm star = new AStarAlgorithm();
         System.out.println("Graph used for network algorithms: " + "https://www.hackerearth.com/practice/algorithms/graphs/maximum-flow/tutorial/");
         System.out.println("Expected maximum flow for this graph: 15");
         // graph used for network graphs: https://www.hackerearth.com/practice/algorithms/graphs/maximum-flow/tutorial/
+        System.out.println("------------Ford-Fulkerson Algorithm----------------");
         FordFulkerson ford = new FordFulkerson();
+        System.out.println("------------Goldberg-Tarjan Algorithm----------------");
         GoldbergTarjan gold = new GoldbergTarjan();
+
     }
 
     public static int[][] floydWarshall(int graph[][]) {
