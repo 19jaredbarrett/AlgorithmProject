@@ -19,7 +19,9 @@ public class FloydWarshall {
             }
             System.out.println();
         }
+        Johnson john = new Johnson();
         FordFulkerson ford = new FordFulkerson();
+        GoldbergTarjan gold = new GoldbergTarjan();
     }
 
     public static int[][] floydWarshall(int graph[][]) {

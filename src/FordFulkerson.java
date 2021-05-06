@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
-
+// EDMONDS KARP IMPLEMENTATION!!!
 public class FordFulkerson {
     // this will store the path of the augmenting path
     // determined by breadth first search
@@ -9,14 +9,14 @@ public class FordFulkerson {
     private int numVert;
     int[][] flowGraph;
     public FordFulkerson () {
-        int[][] flowGraph
+        int[][] graphTest
                 = { { 0, 16, 13, 0, 0, 0 }, { 0, 0, 10, 12, 0, 0 },
                 { 0, 4, 0, 0, 14, 0 },  { 0, 0, 9, 0, 0, 20 },
                 { 0, 0, 0, 7, 0, 4 },   { 0, 0, 0, 0, 0, 0 } };
-        numVert = flowGraph.length;
+        numVert = graphTest.length;
         augPath = new int[numVert];
         flowGraph = new int[numVert][numVert];
-        int flow = fordFulkerson(flowGraph, 0, 5) ;
+        int flow = fordFulkerson(graphTest, 0, 5) ;
         System.out.println("Ford-Fulkerson Flow Found: " + flow);
 
     }
@@ -71,13 +71,15 @@ public class FordFulkerson {
             for (int v = 0; v < numVert; v++){
                 // only if this vertex hasn't been visited yet and the residual graph for this is greater than 0 (not src)
                 if(!visited[v] && flowGraph[currVert][v] > 0) {
-                    // we found the destination,  add current vert and return true!
+                    // we found the destination, v is equal to the destination!
                     if (v == dst) {
+                        // set augPath to currVert to describe the path
                         augPath[v] = currVert;
                         return true;
                     }
                     // add this vertex to our path!
                     augPath[v] = currVert;
+                    // set visited to true
                     visited[v] = true;
                     queue.add(v);
 

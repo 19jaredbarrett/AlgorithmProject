@@ -1,5 +1,6 @@
 public class Johnson {
-    public static void main (String[] args ) {
+    private int numVert;
+    public Johnson () {
 
     }
 }
