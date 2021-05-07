@@ -3,14 +3,28 @@ public class FloydWarshall {
     public static final int MAX_INT = 100000000;
 
     public static void main(String[] args) {
-        int graph[][] = {   {0,         5,      MAX_INT,    10},
-                            {MAX_INT,   0,      3,          MAX_INT},
-                            {MAX_INT,   MAX_INT,0,          1},
-                            {MAX_INT, MAX_INT, MAX_INT, 0}
-        };
+        int[][] allPairsGraph = {
+                { 0, 3, 6, MAX_INT, MAX_INT, MAX_INT, MAX_INT},
+                { 3, 0, 2, 1, MAX_INT, MAX_INT, MAX_INT},
+                { 6,         2, 0, 1, 4, 2, MAX_INT},
+                { MAX_INT,1, 1, 0, 2, MAX_INT,4},
+                { MAX_INT, MAX_INT,4, 2, 0, 2, 1},
+                { MAX_INT, MAX_INT,2, MAX_INT,2, 0, 1},
+                { MAX_INT, MAX_INT, MAX_INT,4, 1, 1, 0}
+                };
+        /* How the graph should look at the end:
+            0 3 4 5 6 7 7
+            3 0 2 1 3 4 4
+            4 2 0 1 3 2 3
+            5 1 1 0 2 3 3
+            6 3 3 2 0 2 1
+            7 4 2 3 2 0 1
+            7 4 3 3 1 1 0
+
+         */
         System.out.println("------------Floyd-Warshall Algorithm----------------");
         System.out.println("Distances between vertices before");
-        for(int[] row : graph) {
+        for(int[] row : allPairsGraph) {
             for(int num : row) {
                 if (num == MAX_INT)
                     System.out.print("NF");
@@ -22,7 +36,7 @@ public class FloydWarshall {
         }
         System.out.println("The distances between each vertex after FloydWarshall");
         // print and get the shortest graph!
-        for(int[] row : floydWarshall(graph)) {
+        for(int[] row : floydWarshall(allPairsGraph)) {
             for(int num : row) {
                 if(num == MAX_INT)
                     System.out.print("NF");
@@ -33,7 +47,7 @@ public class FloydWarshall {
             System.out.println();
         }
         System.out.println("------------Johnson Algorithm----------------");
-        Johnson john = new Johnson();
+        Johnson john = new Johnson(allPairsGraph);
         System.out.println("------------A Star Algorithm----------------");
         AStarAlgorithm star = new AStarAlgorithm();
         System.out.println("Graph used for network algorithms: " + "https://www.hackerearth.com/practice/algorithms/graphs/maximum-flow/tutorial/");
